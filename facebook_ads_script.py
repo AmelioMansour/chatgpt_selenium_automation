@@ -5,7 +5,7 @@ import time
 chrome_driver_path = r"C:\Users\ameli\Downloads\chromedriver-win64\chromedriver-win64\chromedriver.exe"
 
 # Path to Chrome executable - adjust if yours is different
-chrome_path = r'"C:\Program Files\Google\Chrome\Application\chrome.exe"'
+chrome_path = r"C:\Program Files\Google\Chrome\Application\chrome.exe"
 
 chatgpt = ChatGPTAutomation(chrome_path, chrome_driver_path)
 
