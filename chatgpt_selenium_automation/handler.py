@@ -25,12 +25,30 @@ class ChatGPTAutomation:
         self.chrome_path = chrome_path
         self.chrome_driver_path = chrome_driver_path
 
+        # URL that will be opened in Chrome. Change here if you want a different start page
         url = r"https://chat.openai.com"
+
+        # Find a free localhost port so we can attach the Selenium driver via remote debugging
         free_port = self.find_available_port()
+        print(f"[DEBUG] Launching Chrome on port {free_port}...")
+
+        # Start Chrome with remote debugging enabled. This happens in a separate
+        # thread so that the rest of the constructor can continue running.
         self.launch_chrome_with_remote_debugging(free_port, url)
+
+        # Wait for the user to complete the login/human verification step. The
+        # program will pause here until the user types 'y'.
         self.wait_for_human_verification()
+
+        # Connect Selenium to the running Chrome instance. If the script hangs
+        # after this line it likely means the debugger port was not reachable.
+        print("[DEBUG] Attempting to connect WebDriver to Chrome...")
         self.driver = self.setup_webdriver(free_port)
+        print("[DEBUG] WebDriver connected.")
+
+        # Grab the session cookie so we know the connection worked
         self.cookie = self.get_cookie()
+        print("[DEBUG] Retrieved session cookie.")
 
     @staticmethod
     def find_available_port():
@@ -72,30 +90,41 @@ class ChatGPTAutomation:
         return cookie
 
     def send_prompt_to_chatgpt(self, prompt):
-        """ Sends a message to ChatGPT and waits for 20 seconds for the response """
+        """Sends a message to ChatGPT and waits for the response."""
 
+        print(f"[DEBUG] Sending prompt to ChatGPT: {prompt}")
+        # Locate the message input box on the page. If this fails the locator
+        # might have changed or the page didn't load correctly.
         input_box = self.driver.find_element(by=By.XPATH, value='//textarea[contains(@id, "prompt-textarea")]')
+
+        # Set the value using JavaScript to avoid issues with long prompts
         self.driver.execute_script(f"arguments[0].value = '{prompt}';", input_box)
         input_box.send_keys(Keys.RETURN)
         input_box.submit()
+
+        # Wait for ChatGPT to finish generating the response
         self.check_response_ended()
+        print("[DEBUG] Response generation completed.")
 
     def check_response_ended(self):
         """ Checks if ChatGPT response ended """
+        print("[DEBUG] Waiting for ChatGPT to finish generating the response...")
         start_time = time.time()
         while len(self.driver.find_elements(by=By.CSS_SELECTOR, value='div.text-base')[-1].find_elements(
                 by=By.CSS_SELECTOR, value='button.text-token-text-tertiary')) < 1:
             time.sleep(0.5)
             # Exit the while loop after 60 seconds anyway
             if time.time() - start_time > 60:
+                print("[DEBUG] Timeout while waiting for response to finish.")
                 break
-        time.sleep(1)  # the length should be =4, so it's better to wait a moment to be sure it's really finished
+        time.sleep(1)  # Wait a moment to ensure all tokens are loaded
 
     def return_chatgpt_conversation(self):
         """
         :return: returns a list of items, even items are the submitted questions (prompts) and odd items are chatgpt response
         """
 
+        print("[DEBUG] Retrieving full conversation from the page...")
         return self.driver.find_elements(by=By.CSS_SELECTOR, value='div.text-base')
 
     def save_conversation(self, file_name):
@@ -114,6 +143,8 @@ class ChatGPTAutomation:
         if not os.path.exists(directory_name):
             os.makedirs(directory_name)
 
+        print(f"[DEBUG] Saving conversation to {os.path.join(directory_name, file_name)}")
+
         delimiter = "|^_^|"
         chatgpt_conversation = self.return_chatgpt_conversation()
         with open(os.path.join(directory_name, file_name), "a") as file:
@@ -125,7 +156,9 @@ class ChatGPTAutomation:
         """ :return: the text of the last chatgpt response """
 
         response_elements = self.driver.find_elements(by=By.CSS_SELECTOR, value='div.text-base')
-        return response_elements[-1].text
+        last_response = response_elements[-1].text
+        print(f"[DEBUG] Last response text length: {len(last_response)}")
+        return last_response
 
     @staticmethod
     def wait_for_human_verification():
