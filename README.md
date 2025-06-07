@@ -15,10 +15,10 @@ ChatGPT Automation is a Python project that aims to automate interactions with O
 from chatgpt_selenium_automation.handler import ChatGPTAutomation
 
 # Define the path where the chrome driver is installed on your computer
-chrome_driver_path = r"C:\Users\user\Desktop\chromedriver.exe"
+chrome_driver_path = r"C:\Users\ameli\Downloads\chromedriver-win64\chromedriver-win64\chromedriver.exe"
 
 # the sintax r'"..."' is required because the space in "Program Files" in the chrome path
-chrome_path = r'"C:\Program Files\Google\Chrome\Application\chrome.exe"'
+chrome_path = r'"C:\Users\ameli\Downloads\chromedriver-win64\chromedriver-win64\chromedriver.exe"'
 
 # Create an instance
 chatgpt = ChatGPTAutomation(chrome_path, chrome_driver_path)

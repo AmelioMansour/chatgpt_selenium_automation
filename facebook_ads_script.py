@@ -5,7 +5,7 @@ import time
 chrome_driver_path = r"C:\Users\ameli\Downloads\chromedriver-win64\chromedriver-win64\chromedriver.exe"
 
 # Path to Chrome executable - adjust if yours is different
-chrome_path = r'"C:\Program Files\Google\Chrome\Application\chrome.exe"'
+chrome_path = r'"C:\Users\ameli\Downloads\chromedriver-win64\chromedriver-win64\chromedriver.exe"'
 
 chatgpt = ChatGPTAutomation(chrome_path, chrome_driver_path)
 
@@ -15,7 +15,7 @@ chatgpt.send_prompt_to_chatgpt(first_prompt)
 # Wait 1.5 minutes before sending the second prompt
 print("Waiting 1.5 minutes before sending the next prompt...")
 
-for _ in range(90):
+for _ in range(10):
     time.sleep(1)
 
 second_prompt = "Generate another hyper realistic Facebook ad for mustard seed marketing."
