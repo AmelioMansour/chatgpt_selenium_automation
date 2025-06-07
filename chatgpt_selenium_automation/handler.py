@@ -6,6 +6,7 @@ import time
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.chrome.service import Service
 
 
 class ChatGPTAutomation:
@@ -57,9 +58,9 @@ class ChatGPTAutomation:
              with remote debugging enabled on the specified port"""
 
         chrome_options = webdriver.ChromeOptions()
-        chrome_options.binary_location = self.chrome_driver_path
         chrome_options.add_experimental_option("debuggerAddress", f"127.0.0.1:{port}")
-        driver = webdriver.Chrome(options=chrome_options)
+        service = Service(executable_path=self.chrome_driver_path)
+        driver = webdriver.Chrome(service=service, options=chrome_options)
         return driver
 
     def get_cookie(self):
