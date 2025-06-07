@@ -58,7 +58,7 @@ class ChatGPTAutomation:
 
         chrome_options = webdriver.ChromeOptions()
         chrome_options.add_experimental_option("debuggerAddress", f"127.0.0.1:{port}")
-        driver = webdriver.Chrome(executable_path=self.chrome_driver_path, options=chrome_options)
+        driver = webdriver.Chrome(options=chrome_options)
         return driver
 
     def get_cookie(self):
