@@ -1,4 +1,5 @@
 import os
+import subprocess
 import socket
 import threading
 import time
@@ -70,8 +71,13 @@ class ChatGPTAutomation:
             provided url """
 
         def open_chrome():
-            chrome_cmd = f"{self.chrome_path} --remote-debugging-port={port} --user-data-dir=remote-profile {url}"
-            os.system(chrome_cmd)
+            chrome_cmd = [
+                self.chrome_path,
+                f"--remote-debugging-port={port}",
+                "--user-data-dir=remote-profile",
+                url,
+            ]
+            subprocess.Popen(chrome_cmd)
 
         chrome_thread = threading.Thread(target=open_chrome)
         chrome_thread.start()
