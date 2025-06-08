@@ -17,8 +17,7 @@ from chatgpt_selenium_automation.handler import ChatGPTAutomation
 # Define the path where the chrome driver is installed on your computer
 chrome_driver_path = r"C:\Users\ameli\Downloads\chromedriver-win64\chromedriver-win64\chromedriver.exe"
 
-# the sintax r'"..."' is required because the space in "Program Files" in the chrome path
-chrome_path = r'"C:\Program Files\Google\Chrome\Application\chrome.exe"'
+chrome_path = r"C:\Program Files\Google\Chrome\Application\chrome.exe"
 
 # Create an instance
 chatgpt = ChatGPTAutomation(chrome_path, chrome_driver_path)
