@@ -43,7 +43,12 @@ class ChatGPTAutomation:
         # Connect Selenium to the running Chrome instance. If the script hangs
         # after this line it likely means the debugger port was not reachable.
         print("[DEBUG] Attempting to connect WebDriver to Chrome...")
-        self.driver = self.setup_webdriver(free_port)
+        try:
+            self.driver = self.setup_webdriver(free_port)
+        except Exception as e:
+            # webdriver.Chrome exceptions are surfaced here
+            print(f"[ERROR] Failed to initialize WebDriver: {e}")
+            raise
         print("[DEBUG] WebDriver connected.")
 
         # Grab the session cookie so we know the connection worked
