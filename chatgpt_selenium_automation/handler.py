@@ -7,6 +7,7 @@ import logging
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.chrome.service import Service
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
@@ -73,10 +74,10 @@ class ChatGPTAutomation:
              with remote debugging enabled on the specified port"""
 
         chrome_options = webdriver.ChromeOptions()
-        chrome_options.binary_location = self.chrome_driver_path
+        chrome_options.binary_location = self.chrome_path
         chrome_options.add_experimental_option("debuggerAddress", f"127.0.0.1:{port}")
         try:
-            driver = webdriver.Chrome(options=chrome_options)
+            driver = webdriver.Chrome(service=Service(self.chrome_driver_path), options=chrome_options)
             logger.debug("WebDriver connected to Chrome on port %s", port)
             return driver
         except Exception as exc:
