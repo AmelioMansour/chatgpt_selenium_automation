@@ -1,30 +1,24 @@
 from chatgpt_selenium_automation.handler import ChatGPTAutomation
-import time
 
-# Path to chromedriver executable
-chrome_driver_path = r"C:\Users\ameli\Downloads\chromedriver-win64\chromedriver-win64\chromedriver.exe"
-
-# Path to Chrome executable - adjust if yours is different
+# Define the path where the chrome driver is installed on your computer
+chrome_driver_path = r"C:\Users\ameli\Downloads\chromedriver.exe"
+# the sintax r'"..."' is required because the space in "Program Files" in the chrome path
 chrome_path = r'"C:\Program Files\Google\Chrome\Application\chrome.exe"'
 
-print("[DEBUG] Initializing ChatGPTAutomation...")
+# Create an instance
 chatgpt = ChatGPTAutomation(chrome_path, chrome_driver_path)
-print("[DEBUG] ChatGPTAutomation initialized.")
 
-first_prompt = "Generate a hyper realistic Facebook ad for mustard seed marketing."
-print("[DEBUG] Sending first prompt...")
-chatgpt.send_prompt_to_chatgpt(first_prompt)
+# Define a prompt and send it to chatgpt
+prompt = "What are the benefits of exercise?"
+chatgpt.send_prompt_to_chatgpt(prompt)
 
-# Wait 1.5 minutes before sending the second prompt
-print("Waiting 1.5 minutes before sending the next prompt...")
+# Retrieve the last response from ChatGPT
+response = chatgpt.return_last_response()
+print(response)
 
-# Sleep for a short period. Adjust the range to change the wait time.
-for _ in range(10):
-    time.sleep(1)
+# Save the conversation to a text file
+file_name = "conversation.txt"
+chatgpt.save_conversation(file_name)
 
-second_prompt = "Generate another hyper realistic Facebook ad for mustard seed marketing."
-print("[DEBUG] Sending second prompt...")
-chatgpt.send_prompt_to_chatgpt(second_prompt)
-
-print("[DEBUG] Quitting automation...")
+# Close the browser and terminate the WebDriver session
 chatgpt.quit()
