@@ -37,14 +37,6 @@ PROMPT = (
     "(include in some versions): 30-Day Satisfaction Guarantee. Michigan-Based Marketing Team. Month-to-Month Simplicity. "
     "Book More Jobs Fast. Generate one unique ad design per run — each with a visually distinct layout, message, "
     "and style."
-
-
-
-
-
-
-
-"
 )
 
 
